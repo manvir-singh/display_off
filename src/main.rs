@@ -123,13 +123,6 @@ unsafe extern "system" fn monitor_enum_proc(h_monitor: HMONITOR, _: HDC, _: LPRE
 	for monitor in temp_mon {
 		display_list.push(monitor.hPhysicalMonitor);
 	}
-
-	/*
-	* Will `display_list` be droped if `mem::forget` is'nt called?
-	* `display_list` lives outside this function in `main()`, passed
-	* as a pointer to this function.
-	*/
-	mem::forget(display_list);
 	
 	1
 }
