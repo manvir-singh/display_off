@@ -1,0 +1,7 @@
+[package]
+name = "display_off"
+version = "0.1.0"
+authors = ["Manvir <webmaster@programming4life.com>"]
+
+[dependencies]
+winapi = { version = "0.3", features = ["lowlevelmonitorconfigurationapi", "winuser", "libloaderapi"] }
