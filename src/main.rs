@@ -23,8 +23,6 @@ enum Power {
 	HardOff = 0x05
 }
 
-static mut DISPLAY_LIST: Option<Vec<*mut c_void>> = None;
-
 fn win32_string(str : &str) -> Vec<u16> {
 	let mut vec: Vec<u16> = str.encode_utf16().collect();
 	vec.push(0);
@@ -133,8 +131,8 @@ unsafe extern "system" fn monitor_enum_proc(h_monitor: HMONITOR, _: HDC, _: LPRE
 unsafe extern "system" fn win_proc(hwnd: HWND, msg: u32, w_param: usize, l_param: isize) -> isize {
 	match msg {
 	    WM_QUERYENDSESSION => {
-	    	let display_list: Vec<*mut c_void> = DISPLAY_LIST.clone().unwrap();
-	    	poweroff_displays(display_list);
+	    	let display_handles: Vec<*mut c_void> = get_display_handles();
+	    	poweroff_displays(display_handles);
 	    },
 	    _ => (),
 	};
@@ -142,9 +140,6 @@ unsafe extern "system" fn win_proc(hwnd: HWND, msg: u32, w_param: usize, l_param
 }
 
 fn main() {
-	let display_handles: Vec<*mut c_void> = get_display_handles();
-	unsafe { DISPLAY_LIST = Some(display_handles) };
-
 	let window = create_window();
 	run_loop(window);
 }
